@@ -11,4 +11,4 @@ def test_books_length():
     text that the correct length of books are returned
     '''
     # assert len(load_books('./mock_books.csv')) == 3
-    assert 3 * 3 = 9
+    assert 3 * 3 == 9

@@ -1,4 +1,4 @@
-from library import * 
+from ..library import * 
 import pytest
 
 

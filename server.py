@@ -11,13 +11,13 @@ app = Flask(__name__)
 
 env = jinja2.Environment( loader=jinja2.FileSystemLoader('.'))
 
-book_data = 'books.csv'
+filepath = './notes.csv'
 
 
 @app.route('/')
 def home():
     indexcss =  url_for('static', filename='css/index.css')
-    notes = get_notes()
+    notes = get_notes(filepath)
     template = env.get_template('/templates/homepage.html')
     return template.render(notes = notes, csslink = indexcss)
 

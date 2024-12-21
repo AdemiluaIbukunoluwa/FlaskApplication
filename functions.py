@@ -18,5 +18,10 @@ def get_notes(filepath):
                 data.append(note)
             return data
 
-def get_note(id):
-    pass
+def get_note(notes, id):
+    '''
+        get the note with the specified id
+    '''
+    for note in notes:
+        if note.id == id:
+            return note

@@ -14,7 +14,7 @@ def get_notes(filepath):
             for line in lines:
                 line = line.split("%%")
                 id, subject, content, time, date = line
-                note = {"id": id, "subject": subject, "content": content, "time": time, "date": date}
+                note = {"id": int(id), "subject": subject, "content": content, "time": time, "date": date}
                 data.append(note)
             return data
 

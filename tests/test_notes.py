@@ -10,4 +10,4 @@ def test_books_length():
     '''
     text that the correct length of books are returned
     '''
-    assert len(get_notes()) == 3
+    assert len(get_notes()) == 4

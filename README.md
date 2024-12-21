@@ -1,1 +1,1 @@
-# LibraryApplication
+# Notes application

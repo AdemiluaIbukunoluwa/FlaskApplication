@@ -19,3 +19,4 @@ def get_notes(filepath):
             return data
 
 def get_note(id):
+    pass

@@ -24,6 +24,6 @@ def test_get_note():
     book_id = 2
     note =  get_note(notes, book_id)
     expected = {"id": 2, "subject": "Grocery List", "content": "Milk, Eggs, Bread, Butter.", "time": "14:00", "date": "2024-12-21"}
-    assert note.subject.lower == "project ideas"
+    assert note == expected
 
 

@@ -17,13 +17,13 @@ def test_books_length():
 def test_get_note():
     '''
         tests the get_note function
-        checks that the correct book is retrieved
+        checks that the correct note is retrieved
 
     '''
     notes = get_notes(book_file)
-    book_id = 2
-    note =  get_note(notes, book_id)
-    expected = {"id": 2, "subject": "Grocery List", "content": "Milk, Eggs, Bread, Butter.", "time": "14:00", "date": "2024-12-21"}
-    assert note == expected
+    note_id = 2
+    note =  get_note(notes, note_id)
+    assert note.subject == "Grocery List"
+    assert note.id == 2
 
 

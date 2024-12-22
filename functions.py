@@ -23,5 +23,5 @@ def get_note(notes, id):
         get the note with the specified id
     '''
     for note in notes:
-        if note.id == id:
+        if note["id"] == id:
             return note

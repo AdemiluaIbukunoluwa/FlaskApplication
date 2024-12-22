@@ -17,7 +17,7 @@ def get_notes(filepath):
                 note = Note(subject, content)
                 note.date = date
                 note.updated_time = time
-                note.id = id
+                note.id = int(id)
                 data.append(note)
     return data
 

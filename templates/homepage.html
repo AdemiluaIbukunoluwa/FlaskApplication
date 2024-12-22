@@ -13,7 +13,7 @@
 <a href="/addnote" class="btn btn-primary">Add note</a>
 <div class="d-flex flex-wrap m-auto">
     {%for note in notes%}
-    <a href="/{{note.id}}" class="card m-3 note" style="width: 18rem;">
+    <a href="viewnote/{{note.id}}" class="card m-3 note" style="width: 18rem;">
         <div class="card-body">
             <h4 class="card-title">{{note.subject}}</h4>
             <h6 class="card-subtitle mb-2 text-muted">{{note.date}}</h6>

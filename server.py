@@ -5,7 +5,10 @@ from flask import Flask, request, redirect, url_for
 import jinja2
 import requests
 
-from functions import get_notes
+from models.note import Note
+
+from functions import *
+
 
 app = Flask(__name__)
 
@@ -13,20 +16,30 @@ env = jinja2.Environment( loader=jinja2.FileSystemLoader('.'))
 
 filepath = './notes.csv'
 
+notes = get_notes(filepath)
 
 @app.route('/')
 def home():
     indexcss =  url_for('static', filename='css/index.css')
-    notes = get_notes(filepath)
     template = env.get_template('/templates/homepage.html')
     return template.render(notes = notes, csslink = indexcss)
 
-@app.route('/viewnote/:id')
-def view_note():
-    pass
+@app.route('/viewnote/<int:id>')
+def view_note(id):
+    css =  url_for('static', filename='css/notepage.css')
+    note = get_note(notes, id)
+    return env.get_template('/templates/viewnote.html').render(note=note, csslink = css)
 
 @app.route('/addnote')
+def add_note_page():
+    template = env.get_template('/templates/newnote.html')
+    return template.render()
+
+
+@app.route('/postnote', methods=['GET', 'POST'])
 def add():
-    pass
+    subject = request.form['subject']
+    content = request.form["content"]
+    return view_note()
 
 app.run(host="0.0.0.0", port=3000, debug=True)

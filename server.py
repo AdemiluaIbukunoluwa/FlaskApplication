@@ -18,6 +18,8 @@ filepath = './notes.csv'
 
 notes = get_notes(filepath)
 
+Note.id = notes[-1].id
+
 @app.route('/')
 def home():
     indexcss =  url_for('static', filename='css/index.css')
@@ -40,6 +42,8 @@ def add_note_page():
 def add():
     subject = request.form['subject']
     content = request.form["content"]
-    return view_note()
+    new_note = Note(subject, content)
+    notes.append(new_note)
+    return redirect(url_for('home'))
 
 app.run(host="0.0.0.0", port=3000, debug=True)

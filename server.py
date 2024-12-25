@@ -4,33 +4,74 @@ implements library.py function to the web frontend
 from flask import Flask, request, redirect, url_for
 import jinja2
 import requests
-
 from models.note import Note
-
 from functions import *
+import mysql.connector
 
 
 app = Flask(__name__)
-
 env = jinja2.Environment( loader=jinja2.FileSystemLoader('.'))
 
 filepath = './notes.csv'
 
-notes = get_notes(filepath)
+# notes = get_notes(filepath)
+# Note.id = notes[-1].id
 
-Note.id = notes[-1].id
+DATASOURCE = os.getenv("DATASOURCE", "db")
+DATABASE = os.getenv("DATABASE","notesdb")
+HOST = os.getenv("HOST", "db")
+USER = os.getenv("USER", "root")
+PASSWORD = os.getenv("PASSWORD", "password")
+TABLE = os.getenv("TABLE", "notes")
+
+def create_db():
+    db = mysql.connector.connect(
+          host=HOST,
+        user=USER,
+        password=PASSWORD
+    )
+    cursor = db.cursor()
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DATABASE}")
+    db.commit()
+    cursor.execute(f"USE {DATABASE}")
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE}(id INT AUTO_INCREMENT PRIMARY KEY,subject VARCHAR(50),content TEXT,updated_time DATETIME)")
+    db.commit()
+    db.close
+
+def db_connection():
+    create_db()
+    db = mysql.connector.connect(
+        host=HOST,
+        user=USER,
+        password=PASSWORD,
+        database = DATABASE
+    )
+    return db
+
 
 @app.route('/')
 def home():
+    data = []
+    if DATASOURCE == "db":
+        try:
+            db = db_connection()
+            cursor = db.cursor()
+            cursor.execute("SELECT subject,content,updated_time from notes")
+            data = cursor.fetchall()
+        except mysql.connector.Error as e:
+            print("Error: ", e)
+            data = get_notes(filepath)
+    else:
+        data = get_notes(filepath)
     indexcss =  url_for('static', filename='css/index.css')
     template = env.get_template('/templates/homepage.html')
-    return template.render(notes = notes, csslink = indexcss)
+    return template.render(notes = data, csslink = indexcss)
 
-@app.route('/viewnote/<int:id>')
-def view_note(id):
-    css =  url_for('static', filename='css/notepage.css')
-    note = get_note(notes, id)
-    return env.get_template('/templates/viewnote.html').render(note=note, csslink = css)
+# @app.route('/viewnote/<int:id>')
+# def view_note(id):
+#     css =  url_for('static', filename='css/notepage.css')
+#     note = get_note(notes, id)
+#     return env.get_template('/templates/viewnote.html').render(note=note, csslink = css)
 
 @app.route('/addnote')
 def add_note_page():
@@ -38,12 +79,12 @@ def add_note_page():
     return template.render()
 
 
-@app.route('/postnote', methods=['GET', 'POST'])
-def add():
-    subject = request.form['subject']
-    content = request.form["content"]
-    new_note = Note(subject, content)
-    notes.append(new_note)
-    return redirect(url_for('home'))
+# @app.route('/postnote', methods=['GET', 'POST'])
+# def add():
+#     subject = request.form['subject']
+#     content = request.form["content"]
+#     new_note = Note(subject, content)
+#     notes.append(new_note)
+#     return redirect(url_for('home'))
 
 app.run(host="0.0.0.0", port=3000, debug=True)

@@ -8,3 +8,17 @@ services:
     - "3000:3000"
     volumes:
     - .:/root/app
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+      - PMA_PORT=3306
+    # localhost:80 should open up phpmyadmin
+    ports:
+      - "80:80"

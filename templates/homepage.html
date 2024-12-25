@@ -15,9 +15,9 @@
     {%for note in notes%}
     <a href="viewnote/{{note.id}}" class="card m-3 note" style="width: 18rem;">
         <div class="card-body">
-            <h4 class="card-title">{{note.subject}}</h4>
-            <h6 class="card-subtitle mb-2 text-muted">{{note.date}}</h6>
-            <p class="card-text">{{note.content[:15]}}...</p>
+            <h4 class="card-title">{{note[0]}}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">{{note[1][:10]}}..</h6>
+            <p class="card-text">{{note[2]}}...</p>
         </div>
     </a>
     {%endfor%}

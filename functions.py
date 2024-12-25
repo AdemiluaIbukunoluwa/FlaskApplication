@@ -4,7 +4,7 @@ import os
 
 STORAGE = os.getenv("STORAGE", "file")
 
-Note.id = 0
+id = 0
 
 def get_notes(filepath):
     if STORAGE == "file":
@@ -15,8 +15,7 @@ def get_notes(filepath):
                 line = line.strip().split("%%")
                 id, subject, content, time, date = line
                 note = Note(subject, content)
-                note.date = date
-                note.updated_time = time
+                note.updated_time = date + time
                 note.id = int(id)
                 data.append(note)
     return data
